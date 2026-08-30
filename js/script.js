@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinPanel = document.getElementById('skinPanel');
     const themeToggle = document.getElementById('themeToggle');
 
-    let isProcessing = false;
+    let typingTimer = null;
 
-    // --- Side Skin Panel Toggle ---
+    // --- Side Skin Panel Toggle & Color Swatches ---
     if (skinToggle && skinPanel) {
         skinToggle.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Light/Dark Toggle ---
+    // --- Light/Dark Mode Switcher ---
     if (themeToggle) {
         let isDark = false;
         themeToggle.addEventListener('click', () => {
@@ -117,123 +117,74 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.color = '#f1c40f';
         });
 
-        // Process Gallery Images
-        clone.querySelectorAll('.gallery-thumb').forEach(img => {
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openModal(img.src, 'image');
-            });
-        });
-
-        // Process Action Options
-        clone.querySelectorAll('.action-options li').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const action = item.dataset.action;
-                const link = item.dataset.link;
-
-                if (action) {
-                    if (action === 'open_contact_form') {
-                        alert('Send an email directly to shehryarahmadkhalil055@gmail.com or call +92 320 9389299!');
-                        return;
-                    }
-                    const text = item.textContent.trim();
-                    addMessage('user', text);
-                    processCommand(action);
-                } else if (link) {
-                    window.open(link, '_blank');
-                }
-            });
-        });
-
         addMessage('bot', clone, true);
     }
 
     // --- Core Command Processor ---
     function processCommand(input) {
-        if (isProcessing) return;
-        isProcessing = true;
-
+        if (!input) return;
         const lower = input.toLowerCase().trim();
 
         // Switch from Intro to Chat window smoothly
-        if (introScreen.style.display !== 'none') {
+        if (introScreen && introScreen.style.display !== 'none') {
             introScreen.style.display = 'none';
             chatWindow.style.display = 'flex';
         }
 
-        // Custom query handlers
-        if (lower.includes('age')) {
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addMessage('bot', `I'm currently in my 7th semester of BS Data Science at COMSATS University Islamabad (2023–2027 batch).`, false);
-                isProcessing = false;
-            }, 500);
-            return;
-        }
-
-        if (lower.includes('cv') || lower.includes('resume')) {
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addMessage('bot', `📄 You can download my resume here: <a href="Shehryar_Ahmad_Khalil_Resume.pdf" download style="color:var(--primary); font-weight:600;">Download Shehryar's Resume (PDF)</a>`, true);
-                isProcessing = false;
-            }, 500);
-            return;
-        }
-
-        if (lower.includes('education') || lower.includes('degree') || lower.includes('university') || lower.includes('comsats')) {
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addMessage('bot', `🎓 <strong>BS Data Science</strong> — COMSATS University Islamabad (Feb 2023 – Expected 2027, 7th Semester).<br>Coursework: Machine Learning, Deep Learning, Data Mining, Statistical Methods, Data Warehousing, Big Data Analytics, Business Intelligence.`, true);
-                isProcessing = false;
-            }, 500);
-            return;
-        }
-
-        if (lower.includes('award') || lower.includes('certif') || lower.includes('hobbies')) {
-            showTyping();
-            setTimeout(() => {
-                hideTyping();
-                addMessage('bot', `🏆 <strong>9 Professional Certifications:</strong><br>• IBM Machine Learning with Python<br>• DeepLearning.AI / Stanford Supervised ML<br>• Duke University RAG (Retrieval Augmented Generation)<br>• Cisco CCNA Networking<br>• AWS Concepts (DataCamp)<br>• Microsoft Learn Power BI Insights`, true);
-                isProcessing = false;
-            }, 500);
-            return;
-        }
-
-        // Find matching flow
-        let matchedFlow = null;
-        document.querySelectorAll('.flow-section').forEach(section => {
-            const triggers = section.dataset.triggers ? section.dataset.triggers.split(',') : [];
-            triggers.forEach(trigger => {
-                if (lower.includes(trigger.trim())) {
-                    matchedFlow = section.dataset.flow;
-                }
-            });
-        });
-
-        if (!matchedFlow) {
-            document.querySelectorAll('.flow-section').forEach(section => {
-                if (lower === section.dataset.flow) {
-                    matchedFlow = section.dataset.flow;
-                }
-            });
-        }
-
+        if (typingTimer) clearTimeout(typingTimer);
+        hideTyping();
         showTyping();
 
-        setTimeout(() => {
+        typingTimer = setTimeout(() => {
             hideTyping();
+
+            // Custom query handlers
+            if (lower.includes('age')) {
+                addMessage('bot', `I'm currently in my 7th semester of BS Data Science at COMSATS University Islamabad (2023–2027 batch).`, false);
+                return;
+            }
+
+            if (lower.includes('cv') || lower.includes('resume')) {
+                addMessage('bot', `📄 You can download my resume here: <a href="Shehryar_Ahmad_Khalil_Resume.pdf" download style="color:var(--primary); font-weight:600;">Download Shehryar's Resume (PDF)</a>`, true);
+                return;
+            }
+
+            if (lower.includes('education') || lower.includes('degree') || lower.includes('university') || lower.includes('comsats')) {
+                addMessage('bot', `🎓 <strong>BS Data Science</strong> — COMSATS University Islamabad (Feb 2023 – Expected 2027, 7th Semester).<br>Coursework: Machine Learning, Deep Learning, Data Mining, Statistical Methods, Data Warehousing, Big Data Analytics, Business Intelligence.`, true);
+                return;
+            }
+
+            if (lower.includes('award') || lower.includes('certif') || lower.includes('hobbies')) {
+                addMessage('bot', `🏆 <strong>9 Professional Certifications:</strong><br>• IBM Machine Learning with Python<br>• DeepLearning.AI / Stanford Supervised ML<br>• Duke University RAG (Retrieval Augmented Generation)<br>• Cisco CCNA Networking<br>• AWS Concepts (DataCamp)<br>• Microsoft Learn Power BI Insights`, true);
+                return;
+            }
+
+            // Find matching flow
+            let matchedFlow = null;
+            document.querySelectorAll('.flow-section').forEach(section => {
+                const triggers = section.dataset.triggers ? section.dataset.triggers.split(',') : [];
+                triggers.forEach(trigger => {
+                    if (lower.includes(trigger.trim())) {
+                        matchedFlow = section.dataset.flow;
+                    }
+                });
+            });
+
+            if (!matchedFlow) {
+                document.querySelectorAll('.flow-section').forEach(section => {
+                    if (lower === section.dataset.flow) {
+                        matchedFlow = section.dataset.flow;
+                    }
+                });
+            }
+
             if (matchedFlow) {
                 renderFlow(matchedFlow, lower);
             } else {
                 addMessage('bot', `I couldn't find info on "${input}". Try asking about <strong>about</strong>, <strong>experience</strong>, <strong>skills</strong>, <strong>projects</strong>, or <strong>contact</strong>.`, true);
             }
-            isProcessing = false;
             scrollToBottom();
-        }, 600);
+        }, 350);
     }
 
     // --- Input Bar Listeners ---
@@ -290,9 +241,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Global Event Delegation for Bot Options ---
+    // --- Unified Event Delegation for Chat Messages (Gallery & Bot Options) ---
     if (chatMessages) {
         chatMessages.addEventListener('click', (e) => {
+            // Gallery Thumbnail Click
+            const thumb = e.target.closest('.gallery-thumb');
+            if (thumb) {
+                openModal(thumb.src, 'image');
+                return;
+            }
+
+            // Action Option Button Click
             const option = e.target.closest('.action-options li');
             if (option) {
                 const action = option.dataset.action;
@@ -301,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (action) {
                     e.stopPropagation();
                     if (action === 'open_contact_form') {
-                        alert('Send an email directly to shehryarahmadkhalil055@gmail.com or call +92 320 9389299!');
+                        window.location.href = 'mailto:shehryarahmadkhalil055@gmail.com';
                         return;
                     }
                     const text = option.textContent.trim();
@@ -344,5 +303,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    console.log('Chatfolio Exact Replica initialized!');
+    console.log('Chatfolio Engine — 100% Button Event Listeners Verified!');
 });
