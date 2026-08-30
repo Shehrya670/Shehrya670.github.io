@@ -1535,28 +1535,40 @@
         <div class="section-num">02</div>
         <h2 class="section-title">Work <em>Experience</em></h2>
       </div>
+
       <div class="exp-card">
         <div class="exp-header">
-          <div>
-            <div class="exp-role">Data Science Intern</div>
-            <div class="exp-company">Qaswa Industries Pvt Ltd</div>
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div
+              style="width:48px; height:48px; border-radius:8px; background:rgba(0,245,160,0.1); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:'Syne'; font-weight:800; color:var(--accent); font-size:20px;">
+              Q</div>
+            <div>
+              <div class="exp-role">Data Science Intern</div>
+              <div class="exp-company">Qaswa Industries Pvt Ltd · Remote / On-Site</div>
+            </div>
           </div>
-          <div class="exp-badge">JULY 1 – AUGUST 28 · 2 MONTHS</div>
+          <div class="exp-badge">JULY 1, 2025 – AUGUST 28, 2025 · 2 MONTHS</div>
         </div>
+
         <ul class="exp-bullets">
-          <li>Developed custom automated <strong>Python data processing workflows</strong> and analytics scripts for
-            dataset manipulation and reporting.</li>
-          <li>Queried and maintained relational databases using <strong>PostgreSQL</strong>, crafting optimized SQL queries
-            to support data integrity and operational decisions.</li>
-          <li>Synchronized enterprise data pipelines within <strong>Odoo ERP</strong>, facilitating streamlined
-            cross-departmental reporting and record consistency.</li>
+          <li><strong>Python Data Pipeline Automation:</strong> Built end-to-end Python ETL scripts to extract, clean, and
+            transform enterprise operational datasets, reducing manual data processing overhead.</li>
+          <li><strong>PostgreSQL Database Engineering:</strong> Queried, structured, and maintained relational database
+            schemas in <strong>PostgreSQL</strong>. Wrote optimized SQL queries, joins, and aggregations for reliable data storage.</li>
+          <li><strong>Odoo ERP System Integration:</strong> Synchronized relational data models with <strong>Odoo ERP</strong>,
+            enabling seamless cross-departmental reporting, inventory tracking, and transactional analytics.</li>
+          <li><strong>Exploratory Analytics & Business Insights:</strong> Conducted statistical analysis on company datasets,
+            delivered actionable data visualizations, and presented key operational trends to stakeholders.</li>
         </ul>
+
         <div class="tag-cloud">
           <span class="tag">Python</span>
           <span class="tag">PostgreSQL</span>
           <span class="tag">Odoo ERP</span>
           <span class="tag">SQL & Query Optimization</span>
           <span class="tag">ETL & Data Engineering</span>
+          <span class="tag">Exploratory Data Analysis (EDA)</span>
+          <span class="tag">Process Automation</span>
         </div>
       </div>
     </div>
@@ -2052,17 +2064,24 @@
 
     // GSAP SCROLL ANIMATIONS
     gsap.utils.toArray('section').forEach(sec => {
-      gsap.from(sec.querySelectorAll('.section-header, .about-grid, .exp-card, .sim-card, .projects-grid, .edu-cert-grid, .lead-grid'), {
-        scrollTrigger: {
-          trigger: sec,
-          start: 'top 80%',
-        },
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: 'power3.out'
-      });
+      const els = sec.querySelectorAll('.section-header, .about-grid, .exp-card, .sim-card, .projects-grid, .edu-cert-grid, .lead-grid');
+      if (els.length) {
+        gsap.fromTo(els, 
+          { y: 30, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: sec,
+              start: 'top 88%',
+              toggleActions: 'play none none none'
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            stagger: 0.15,
+            ease: 'power3.out'
+          }
+        );
+      }
     });
 
     // SKILL BAR ANIMATIONS ON SCROLL
