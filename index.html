@@ -1214,14 +1214,58 @@
       transition-delay: 0.4s;
     }
 
-    /* Responsive */
+    /* MENU TOGGLE (HAMBURGER) */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 28px;
+      height: 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 600;
+      padding: 0;
+    }
+
+    .menu-toggle span {
+      width: 100%;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+      background: var(--accent);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+      background: var(--accent);
+    }
+
+    /* Responsive & Mobile Optimization */
+    @media (hover: none), (pointer: coarse) {
+      body {
+        cursor: auto !important;
+      }
+      a, button, .project-item, .skill-card, .cert-item, .lead-card, .exp-card, .btn-primary, .btn-ghost {
+        cursor: pointer !important;
+      }
+      .cursor, .cursor-ring {
+        display: none !important;
+      }
+    }
+
     @media (max-width: 900px) {
       nav {
-        padding: 20px 24px;
-      }
-
-      .nav-links {
-        gap: 20px;
+        padding: 16px 24px;
       }
 
       section {
@@ -1229,17 +1273,23 @@
       }
 
       #hero {
-        padding: 100px 24px 80px;
+        padding: 100px 24px 60px;
+        min-height: auto;
+      }
+
+      .hero-name {
+        font-size: clamp(38px, 9vw, 68px);
+        letter-spacing: -1.5px;
       }
 
       .about-grid,
       .edu-cert-grid {
         grid-template-columns: 1fr;
-        gap: 48px;
+        gap: 40px;
       }
 
       .skills-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .leadership-grid {
@@ -1247,15 +1297,176 @@
       }
 
       .hero-stats {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 40px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        width: 100%;
+      }
+
+      .stat {
+        text-align: left;
+      }
+
+      .scroll-hint {
         display: none;
       }
 
       .project-item {
-        grid-template-columns: 48px 1fr;
+        grid-template-columns: 36px 1fr;
+        gap: 16px;
+        padding: 20px 20px;
       }
 
       .project-stack {
-        display: none;
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 10px;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 75vw;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(18, 18, 26, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-left: 1px solid var(--border);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 28px;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 550;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+        letter-spacing: 0.15em;
+      }
+
+      .exp-card {
+        padding: 24px 20px;
+      }
+
+      .exp-header-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .exp-period {
+        font-size: 10px;
+        padding: 4px 10px;
+      }
+
+      .edu-card {
+        padding: 28px 24px;
+      }
+
+      .contact-tagline {
+        font-size: 32px;
+      }
+
+      .contact-links {
+        gap: 10px;
+      }
+
+      .contact-link {
+        padding: 12px 18px;
+        font-size: 11px;
+        width: calc(50% - 5px);
+        justify-content: center;
+      }
+
+      .contact-email {
+        font-size: 16px;
+        word-break: break-all;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section {
+        padding: 60px 16px;
+      }
+
+      #hero {
+        padding: 90px 16px 50px;
+      }
+
+      .hero-tag {
+        font-size: 10px;
+        padding: 4px 10px;
+      }
+
+      .hero-name {
+        font-size: 32px;
+        letter-spacing: -1px;
+      }
+
+      .hero-title {
+        font-size: 14px;
+      }
+
+      .hero-desc {
+        font-size: 12.5px;
+      }
+
+      .hero-ctas {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn-primary, .btn-ghost {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skill-card {
+        padding: 24px 20px;
+      }
+
+      .project-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .project-num {
+        font-size: 20px;
+      }
+
+      .contact-link {
+        width: 100%;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+        padding: 24px 16px;
       }
     }
   </style>
@@ -1271,7 +1482,12 @@
     <a href="#hero" class="nav-logo">
       <img src="profile.jpeg" alt="Shehryar Ahmad Khalil Logo">
     </a>
-    <ul class="nav-links">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
@@ -1859,6 +2075,31 @@
       sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
       navLinks.forEach(l => { l.style.color = l.getAttribute('href') === '#' + cur ? 'var(--accent)' : ''; });
     });
+
+    // Mobile Hamburger Menu Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinksList = document.getElementById('navLinks');
+
+    if (menuToggle && navLinksList) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navLinksList.classList.toggle('active');
+      });
+
+      navLinksList.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menuToggle.classList.remove('active');
+          navLinksList.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navLinksList.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navLinksList.classList.remove('active');
+        }
+      });
+    }
 
     // Profile image fallback loader (tries multiple common paths)
     function tryNextProfileImage(img) {
