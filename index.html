@@ -4,47 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shehryar Ahmad Khalil | Data Scientist & ML Engineer</title>
-    <meta name="description" content="Chatfolio Portfolio of Shehryar Ahmad Khalil — Data Scientist & Machine Learning Engineer at COMSATS University Islamabad.">
+    <meta name="description" content="Chatfolio Portfolio of Shehryar Ahmad Khalil — Data Scientist & Machine Learning Engineer.">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Unbounded:wght@300;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
-    <!-- Theme Switcher Base -->
-    <link id="theme-style" rel="stylesheet" href="css/skins/purple.css">
+    <!-- Theme Skins Base -->
+    <link id="theme-style" rel="stylesheet" href="css/skins/blue.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<!-- WATERMARK BACKGROUND TEXTS -->
+<div class="watermark watermark-left">SHEHRYAR AHMAD KHALIL</div>
+<div class="watermark watermark-right">DATA SCIENTIST</div>
+
+<!-- FLOATING SKIN SELECTOR (RIGHT SIDE PANEL) -->
+<button class="skin-floating-btn" id="skinToggle" aria-label="Toggle Theme Skins"><i class="fa-solid fa-gear"></i></button>
+<div class="skin-panel" id="skinPanel">
+    <div class="skin-panel-title">Choose Color Skin</div>
+    <div class="skin-options">
+        <div class="skin-swatch blue" data-skin="blue" title="Blue"></div>
+        <div class="skin-swatch purple" data-skin="purple" title="Purple"></div>
+        <div class="skin-swatch green" data-skin="green" title="Green"></div>
+        <div class="skin-swatch pink" data-skin="pink" title="Pink"></div>
+    </div>
+</div>
+
 <main class="chat-wrapper" id="app">
     <section class="chat-container">
 
+        <!-- TOP RIGHT CONTROLS -->
+        <div class="top-controls">
+            <button class="control-btn" id="themeToggle" title="Toggle Light/Dark Mode"><i class="fa-regular fa-sun"></i></button>
+        </div>
+
         <!-- ==================== INTRO SCREEN ==================== -->
         <div id="intro-screen" class="intro-screen">
-            <div class="intro-content">
-                <div class="hello-badge"><span>Hello!</span></div>
-                <div class="intro-text">
-                    <h1>I'm <span class="highlight-name">Shehryar,</span></h1>
-                    <h2>Data Scientist & ML Engineer</h2>
+            <!-- TOP SPEECH BUBBLE -->
+            <div class="intro-top-badge">
+                <div class="hello-speech-bubble">
+                    <span class="speech-slashes">//</span>
+                    <span class="hello-text-badge">Hello!</span>
                 </div>
-                <div class="intro-bottom">
-                    <div class="quote-block">
-                        <p>"Shehryar's machine learning pipelines and PostgreSQL database optimizations brought exceptional efficiency to our operational data."</p>
-                        <span>— Technical Lead, Qaswa Industries Pvt Ltd</span>
-                    </div>
-                    <div class="avatar-wrapper">
-                        <img src="profile.jpeg" alt="Shehryar Ahmad Khalil Avatar">
-                        <div class="pulse-ring"></div>
-                    </div>
-                    <div class="intro-actions">
-                        <button class="btn btn-primary" data-action="about">More About Me</button>
-                        <button class="btn btn-outline" data-action="projects">See My Work</button>
-                    </div>
+            </div>
+
+            <!-- HEADLINE -->
+            <div class="intro-headline-wrap">
+                <h1 class="intro-headline">
+                    I'm <span class="highlight-name">Shehryar,</span><br>
+                    <span class="role-text">Data Scientist</span>
+                </h1>
+            </div>
+
+            <!-- THREE-COLUMN MID GRID -->
+            <div class="intro-mid-grid">
+                <!-- LEFT: QUOTE CARD -->
+                <div class="quote-card">
+                    <i class="fa-solid fa-quote-left quote-icon"></i>
+                    <p>"Shehryar's machine learning pipelines and PostgreSQL database optimizations brought exceptional efficiency to our operational data."</p>
+                    <span class="quote-author">Technical Lead — Qaswa Industries</span>
+                </div>
+
+                <!-- CENTER: AVATAR WITH ARCH BG BLOB -->
+                <div class="avatar-arch-container">
+                    <div class="arch-bg-blob"></div>
+                    <img src="profile.jpeg" alt="Shehryar Ahmad Khalil" class="avatar-img-cutout" onerror="this.src='https://placehold.co/200x260/0984e3/FFFFFF?text=Shehryar'">
+                </div>
+
+                <!-- RIGHT: BUTTONS STACK -->
+                <div class="intro-buttons">
+                    <button class="btn btn-primary" data-action="about">More About Me</button>
+                    <button class="btn btn-outline" data-action="projects">See My Work</button>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== CHAT WINDOW ==================== -->
+        <!-- ==================== CHAT WINDOW (Initially Hidden) ==================== -->
         <div id="chat-window" class="chat-window" style="display: none;">
             <div id="chat-messages" class="chat-messages"></div>
             <div class="chat-avatar-fixed">
@@ -52,34 +89,57 @@
             </div>
         </div>
 
-        <!-- ==================== HIDDEN CONTENT SECTIONS (Templates) ==================== -->
+        <!-- ==================== CHAT FOOTER & INPUT CONTAINER ==================== -->
+        <footer id="chat-footer" class="chat-footer-wrapper">
+            <div class="input-container-card">
+                <div class="input-bar-row">
+                    <input type="text" id="chat-input" placeholder="Try about, skills, or projects..." autocomplete="off">
+                    <button class="btn-send" id="sendBtn" disabled>
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                </div>
+                
+                <!-- QUICK NAV CHIPS -->
+                <div class="chips-row" id="chipsRow">
+                    <button class="chip-btn" data-flow="about"><i class="fa-regular fa-file-lines chip-icon-about"></i> About Me</button>
+                    <button class="chip-btn" data-flow="skills"><i class="fa-solid fa-gear chip-icon-skills"></i> Skills</button>
+                    <button class="chip-btn" data-flow="projects"><i class="fa-solid fa-layer-group chip-icon-projects"></i> Projects</button>
+                    <button class="chip-btn" data-flow="clients"><i class="fa-solid fa-users chip-icon-clients"></i> Clients</button>
+                    <button class="chip-btn" data-flow="contact"><i class="fa-solid fa-envelope chip-icon-contact"></i> Contact</button>
+                </div>
+            </div>
+            
+            <p class="footer-hint-text"><i class="fa-regular fa-comment-dots"></i> You can ask me about : age · cv · education · experience · awards · hobbies</p>
+        </footer>
+
+        <!-- ==================== HIDDEN FLOW CONTENT TEMPLATES ==================== -->
         <div class="hidden-templates" style="display: none;">
 
             <!-- ABOUT -->
             <div id="flow-about" class="flow-section" data-flow="about" data-triggers="about,about me,bio,information">
                 <p class="flow-intro">I'm a final-year Data Science student at COMSATS University Islamabad (7th semester), specializing in machine learning pipelines, predictive statistical modeling, and database engineering.</p>
                 <div class="stats-grid">
-                    <span><i class="fa-regular fa-graduation-cap"></i> BS Data Science (7th Sem)</span>
+                    <span><i class="fa-solid fa-graduation-cap"></i> BS Data Science (7th Sem)</span>
                     <span><i class="fa-regular fa-star"></i> 9+ Certifications</span>
-                    <span><i class="fa-regular fa-diagram-project"></i> 8+ Projects Shipped</span>
+                    <span><i class="fa-solid fa-cubes"></i> 8+ Projects Shipped</span>
                 </div>
                 <ul class="action-options">
                     <li data-action="experience"><i class="fa-regular fa-circle-right"></i> View Work Experience</li>
-                    <li data-action="skills"><i class="fa-regular fa-circle-right"></i> View My Skills</li>
-                    <li data-action="projects" data-class="btn-secondary"><i class="fa-regular fa-circle-right"></i> View My Projects</li>
+                    <li data-action="skills"><i class="fa-regular fa-circle-right"></i> View Technical Skills</li>
+                    <li data-action="projects" data-class="btn-secondary"><i class="fa-regular fa-circle-right"></i> View Projects</li>
                 </ul>
             </div>
 
             <!-- WORK EXPERIENCE -->
             <div id="flow-experience" class="flow-section" data-flow="experience" data-triggers="experience,work,job,internship,qaswa">
                 <p class="flow-intro">Here is my recent professional industry experience.</p>
-                <div class="project-card" style="background:#fff; border:1px solid var(--border-color); padding:20px; border-radius:16px;">
+                <div class="project-card" style="background:#fff; padding:20px; border-radius:16px;">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
                         <div>
                             <h3 style="font-size:1.1rem; color:var(--text-primary); font-weight:700;">Data Science Intern</h3>
                             <p style="color:var(--primary); font-weight:600; font-size:0.9rem;">Qaswa Industries Pvt Ltd</p>
                         </div>
-                        <span style="background:rgba(var(--primary-rgb),0.1); color:var(--primary); font-size:0.75rem; padding:4px 10px; border-radius:60px; font-weight:600;">Jul 1 – Aug 28, 2025</span>
+                        <span style="background:rgba(var(--primary-rgb),0.1); color:var(--primary); font-size:0.75rem; padding:4px 12px; border-radius:60px; font-weight:600;">Jul 1 – Aug 28, 2025</span>
                     </div>
                     <p class="flow-intro" style="font-size:0.88rem; margin-bottom:12px;">Automated enterprise data pipelines with <strong>Python</strong>, engineered and optimized <strong>PostgreSQL</strong> relational databases, and integrated cross-departmental datasets within <strong>Odoo ERP</strong>.</p>
                     <ul style="padding-left:18px; color:var(--text-secondary); font-size:0.85rem; display:flex; flex-direction:column; gap:6px;">
@@ -128,36 +188,36 @@
 
             <!-- PROJECTS -->
             <div id="flow-projects" class="flow-section" data-flow="projects" data-triggers="projects,portfolio,work,case studies">
-                <p class="flow-intro">Check out some of my recent data science & ML projects. Click an image to view details.</p>
+                <p class="flow-intro">Check out some of my recent data science & ML projects. Click an image to expand.</p>
                 
                 <!-- Project 1: LUMINA FYP -->
-                <div class="project-card" data-title="LUMINA FYP" data-media="gallery">
+                <div class="project-card" data-title="LUMINA FYP">
                     <h3 style="font-size:1rem; font-weight:700; color:var(--primary); margin-bottom:4px;">LUMINA (FYP) — AI Educational Platform</h3>
                     <p class="project-summary">AI-powered learning & career readiness platform with NLP and collaborative filtering across 18+ modules.</p>
                     <div class="gallery-grid">
-                        <img src="https://placehold.co/600x400/6c5ce7/FFFFFF?text=LUMINA+AI+Platform" alt="LUMINA FYP" class="gallery-thumb">
-                        <img src="https://placehold.co/600x400/0984e3/FFFFFF?text=NLP+Recommendation" alt="NLP Engine" class="gallery-thumb">
+                        <img src="https://placehold.co/600x400/0984e3/FFFFFF?text=LUMINA+AI+Platform" alt="LUMINA FYP" class="gallery-thumb">
+                        <img src="https://placehold.co/600x400/6c5ce7/FFFFFF?text=NLP+Recommendation" alt="NLP Engine" class="gallery-thumb">
                         <img src="https://placehold.co/600x400/00b894/FFFFFF?text=Career+Gap+Analytics" alt="Analytics Dashboard" class="gallery-thumb">
                     </div>
                 </div>
 
                 <!-- Project 2: Heart Attack Risk Prediction -->
-                <div class="project-card" data-title="Heart Attack Risk Prediction" data-media="gallery">
+                <div class="project-card" data-title="Heart Attack Risk Prediction">
                     <h3 style="font-size:1rem; font-weight:700; color:var(--primary); margin-bottom:4px;">Heart Attack Risk Prediction</h3>
                     <p class="project-summary">Clinical machine learning models (Random Forest, SVM) trained on 5,000+ patient records with AUC-ROC evaluation.</p>
                     <div class="gallery-grid">
                         <img src="https://placehold.co/600x400/fd79a8/FFFFFF?text=Clinical+ML+Model" alt="Clinical ML" class="gallery-thumb">
-                        <img src="https://placehold.co/600x400/6c5ce7/FFFFFF?text=AUC-ROC+Curve" alt="AUC-ROC Curve" class="gallery-thumb">
+                        <img src="https://placehold.co/600x400/0984e3/FFFFFF?text=AUC-ROC+Curve" alt="AUC-ROC Curve" class="gallery-thumb">
                     </div>
                 </div>
 
                 <!-- Project 3: Shopping Mall Sales Dashboard -->
-                <div class="project-card" data-title="Shopping Mall Sales Dashboard" data-media="gallery">
+                <div class="project-card" data-title="Shopping Mall Sales Dashboard">
                     <h3 style="font-size:1rem; font-weight:700; color:var(--primary); margin-bottom:4px;">Shopping Mall Sales Dashboard</h3>
                     <p class="project-summary">End-to-end BI pipeline with Pandas ETL and interactive Power BI drill-through analytics with custom DAX measures.</p>
                     <div class="gallery-grid">
                         <img src="https://placehold.co/600x400/00b894/FFFFFF?text=Power+BI+Dashboard" alt="Power BI" class="gallery-thumb">
-                        <img src="https://placehold.co/600x400/0984e3/FFFFFF?text=DAX+Sales+Measures" alt="Sales Measures" class="gallery-thumb">
+                        <img src="https://placehold.co/600x400/e17055/FFFFFF?text=DAX+Sales+Measures" alt="Sales Measures" class="gallery-thumb">
                     </div>
                 </div>
 
@@ -172,11 +232,11 @@
             <div id="flow-clients" class="flow-section" data-flow="clients" data-triggers="clients,brands,companies,organizations,partners">
                 <p class="flow-intro">Organizations, universities, and teams I've had the pleasure of working with.</p>
                 <div class="client-logos">
-                    <div class="client-item" data-name="Qaswa Industries" style="background:#eaeef2;">Qaswa Industries</div>
-                    <div class="client-item" data-name="COMSATS Islamabad" style="background:#eaeef2;">COMSATS University</div>
-                    <div class="client-item" data-name="TEDx CUI" style="background:#eaeef2;">TEDx CUI</div>
-                    <div class="client-item" data-name="IEEE" style="background:#eaeef2;">IEEE Computer Society</div>
-                    <div class="client-item" data-name="GDG" style="background:#eaeef2;">Google Developer Group</div>
+                    <div class="client-item" data-name="Qaswa Industries">Qaswa Industries</div>
+                    <div class="client-item" data-name="COMSATS Islamabad">COMSATS University</div>
+                    <div class="client-item" data-name="TEDx CUI">TEDx CUI</div>
+                    <div class="client-item" data-name="IEEE">IEEE Computer Society</div>
+                    <div class="client-item" data-name="GDG">Google Developer Group</div>
                 </div>
                 <ul class="action-options">
                     <li data-action="contact">Hire Me</li>
@@ -204,35 +264,10 @@
             </div>
         </div>
 
-        <!-- ==================== CHAT FOOTER (Input) ==================== -->
-        <footer id="chat-footer" class="chat-footer" style="display: none;">
-            <div class="input-wrapper">
-                <div class="input-bar">
-                    <button class="btn-toggle-nav" id="menuToggle">
-                        <i class="fa-solid fa-plus" id="toggleIcon"></i>
-                    </button>
-                    <input type="text" id="chat-input" placeholder="Try 'about', 'experience', 'skills', or 'projects'..." autocomplete="off">
-                    <button class="btn-send" id="sendBtn" disabled>
-                        <i class="fa-solid fa-arrow-up"></i>
-                    </button>
-                </div>
-                <!-- Quick Navigation Chips -->
-                <nav id="primary-nav" class="primary-nav" style="display: none;">
-                    <button class="chip" data-flow="about"><i class="fa-regular fa-file-lines"></i> About</button>
-                    <button class="chip" data-flow="experience"><i class="fa-solid fa-briefcase"></i> Experience</button>
-                    <button class="chip" data-flow="skills"><i class="fa-solid fa-gear"></i> Skills</button>
-                    <button class="chip" data-flow="projects"><i class="fa-solid fa-layer-group"></i> Projects</button>
-                    <button class="chip" data-flow="clients"><i class="fa-solid fa-users"></i> Partners</button>
-                    <button class="chip" data-flow="contact"><i class="fa-solid fa-envelope"></i> Contact</button>
-                </nav>
-                <p class="footer-hint"><i class="fa-regular fa-comment-dots"></i> You can ask about: age · cv · education · experience · awards · theme blue</p>
-            </div>
-        </footer>
-
     </section>
 </main>
 
-<!-- ==================== MODAL (For Images/Videos) ==================== -->
+<!-- ==================== MEDIA MODAL ==================== -->
 <div id="media-modal" class="modal-overlay" style="display: none;">
     <span class="modal-close">&times;</span>
     <div class="modal-content">

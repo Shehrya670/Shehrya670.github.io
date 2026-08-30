@@ -3,23 +3,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const introScreen = document.getElementById('intro-screen');
     const chatWindow = document.getElementById('chat-window');
     const chatMessages = document.getElementById('chat-messages');
-    const chatFooter = document.getElementById('chat-footer');
     const inputField = document.getElementById('chat-input');
     const sendBtn = document.getElementById('sendBtn');
-    const menuToggle = document.getElementById('menuToggle');
-    const primaryNav = document.getElementById('primary-nav');
-    const toggleIcon = document.getElementById('toggleIcon');
     const modal = document.getElementById('media-modal');
     const modalImg = document.getElementById('modal-image');
     const modalIframe = document.getElementById('modal-iframe');
     const modalClose = document.querySelector('.modal-close');
+    const themeStyle = document.getElementById('theme-style');
+    const skinToggle = document.getElementById('skinToggle');
+    const skinPanel = document.getElementById('skinPanel');
+    const themeToggle = document.getElementById('themeToggle');
 
-    let isMenuOpen = false;
     let isProcessing = false;
+
+    // --- Side Skin Panel Toggle ---
+    if (skinToggle && skinPanel) {
+        skinToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            skinPanel.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!skinPanel.contains(e.target) && e.target !== skinToggle) {
+                skinPanel.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.skin-swatch').forEach(swatch => {
+            swatch.addEventListener('click', () => {
+                const skin = swatch.dataset.skin;
+                if (skin && themeStyle) {
+                    themeStyle.href = `css/skins/${skin}.css`;
+                }
+            });
+        });
+    }
+
+    // --- Light/Dark Toggle ---
+    if (themeToggle) {
+        let isDark = false;
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            if (isDark) {
+                document.documentElement.style.setProperty('--bg-body', '#1a1a2e');
+                document.documentElement.style.setProperty('--bg-container', '#161625');
+                document.documentElement.style.setProperty('--bg-chat', '#1e1e30');
+                document.documentElement.style.setProperty('--text-primary', '#ffffff');
+                document.documentElement.style.setProperty('--text-secondary', '#a0a0b8');
+                document.documentElement.style.setProperty('--border-color', '#2a2a40');
+                themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            } else {
+                document.documentElement.style.setProperty('--bg-body', '#edf2f7');
+                document.documentElement.style.setProperty('--bg-container', '#ffffff');
+                document.documentElement.style.setProperty('--bg-chat', '#f8f9fc');
+                document.documentElement.style.setProperty('--text-primary', '#1a1a2e');
+                document.documentElement.style.setProperty('--text-secondary', '#6c6c80');
+                document.documentElement.style.setProperty('--border-color', '#eaeef2');
+                themeToggle.innerHTML = '<i class="fa-regular fa-sun"></i>';
+            }
+        });
+    }
 
     // --- Helpers ---
     function scrollToBottom() {
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+        if (chatWindow) {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
     }
 
     function addMessage(type, content, isHTML = false) {
@@ -56,11 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const template = document.querySelector(`.flow-section[data-flow="${flowId}"]`);
         if (!template) return;
 
-        // Clone the content deeply
         const clone = template.cloneNode(true);
         clone.style.display = 'block';
         
-        // Process Star Ratings in the clone
+        // Process Star Ratings
         clone.querySelectorAll('.stars').forEach(el => {
             const rating = parseInt(el.dataset.rating) || 0;
             const full = '★'.repeat(rating);
@@ -69,27 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.color = '#f1c40f';
         });
 
-        // Process YouTube embeds
-        clone.querySelectorAll('.youtube-embed').forEach(el => {
-            const id = el.dataset.id;
-            if (id) {
-                const iframe = document.createElement('iframe');
-                iframe.src = `https://www.youtube.com/embed/${id}`;
-                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-                iframe.allowFullscreen = true;
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                iframe.style.position = 'absolute';
-                iframe.style.top = '0';
-                iframe.style.left = '0';
-                el.style.position = 'relative';
-                el.style.paddingBottom = '56.25%';
-                el.style.height = '0';
-                el.appendChild(iframe);
-            }
-        });
-
-        // Process Gallery Images (add click listeners)
+        // Process Gallery Images
         clone.querySelectorAll('.gallery-thumb').forEach(img => {
             img.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -121,44 +149,20 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage('bot', clone, true);
     }
 
-    // Global Event Delegation fallback for chat options & gallery images
-    chatMessages.addEventListener('click', (e) => {
-        const option = e.target.closest('.action-options li');
-        if (option) {
-            const action = option.dataset.action;
-            const link = option.dataset.link;
-
-            if (action) {
-                e.stopPropagation();
-                if (action === 'open_contact_form') {
-                    alert('Send an email directly to shehryarahmadkhalil055@gmail.com or call +92 320 9389299!');
-                    return;
-                }
-                const text = option.textContent.trim();
-                addMessage('user', text);
-                processCommand(action);
-            } else if (link) {
-                e.stopPropagation();
-                window.open(link, '_blank');
-            }
-        }
-    });
-
-    // --- Core Processor ---
+    // --- Core Command Processor ---
     function processCommand(input) {
         if (isProcessing) return;
         isProcessing = true;
 
         const lower = input.toLowerCase().trim();
-        
-        // Check if intro is visible, hide it
+
+        // Switch from Intro to Chat window smoothly
         if (introScreen.style.display !== 'none') {
             introScreen.style.display = 'none';
             chatWindow.style.display = 'flex';
-            chatFooter.style.display = 'flex';
         }
 
-        // Handle custom queries (age, cv, education, experience, awards)
+        // Custom query handlers
         if (lower.includes('age')) {
             showTyping();
             setTimeout(() => {
@@ -189,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (lower.includes('award') || lower.includes('certif')) {
+        if (lower.includes('award') || lower.includes('certif') || lower.includes('hobbies')) {
             showTyping();
             setTimeout(() => {
                 hideTyping();
@@ -210,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Fallback to exact match on flow name
         if (!matchedFlow) {
             document.querySelectorAll('.flow-section').forEach(section => {
                 if (lower === section.dataset.flow) {
@@ -219,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Show typing indicator
         showTyping();
 
         setTimeout(() => {
@@ -227,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (matchedFlow) {
                 renderFlow(matchedFlow, lower);
             } else {
-                // Fallback message
                 addMessage('bot', `I couldn't find info on "${input}". Try asking about <strong>about</strong>, <strong>experience</strong>, <strong>skills</strong>, <strong>projects</strong>, or <strong>contact</strong>.`, true);
             }
             isProcessing = false;
@@ -235,59 +236,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 600);
     }
 
-    // --- Event Listeners ---
-
-    // Send Button
-    sendBtn.addEventListener('click', () => {
-        const val = inputField.value.trim();
-        if (!val) return;
-        addMessage('user', val);
-        inputField.value = '';
-        sendBtn.disabled = true;
-        sendBtn.classList.remove('active');
-        processCommand(val);
-    });
-
-    // Enter Key
-    inputField.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendBtn.click();
-        }
-    });
-
-    // Input Validation (Enable/Disable Send)
-    inputField.addEventListener('input', () => {
-        const val = inputField.value.trim();
-        if (val.length > 0) {
-            sendBtn.disabled = false;
-            sendBtn.classList.add('active');
-        } else {
+    // --- Input Bar Listeners ---
+    if (sendBtn && inputField) {
+        sendBtn.addEventListener('click', () => {
+            const val = inputField.value.trim();
+            if (!val) return;
+            addMessage('user', val);
+            inputField.value = '';
             sendBtn.disabled = true;
             sendBtn.classList.remove('active');
-        }
-    });
+            processCommand(val);
+        });
 
-    // Toggle Navigation Menu
-    menuToggle.addEventListener('click', () => {
-        isMenuOpen = !isMenuOpen;
-        primaryNav.style.display = isMenuOpen ? 'flex' : 'none';
-        menuToggle.classList.toggle('active');
-        toggleIcon.style.transform = isMenuOpen ? 'rotate(45deg)' : 'rotate(0)';
-    });
+        inputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendBtn.click();
+            }
+        });
 
-    // Navigation Chips Click
-    document.querySelectorAll('.chip').forEach(chip => {
+        inputField.addEventListener('input', () => {
+            const val = inputField.value.trim();
+            if (val.length > 0) {
+                sendBtn.disabled = false;
+                sendBtn.classList.add('active');
+            } else {
+                sendBtn.disabled = true;
+                sendBtn.classList.remove('active');
+            }
+        });
+    }
+
+    // --- Quick Nav Chips Click Listeners ---
+    document.querySelectorAll('.chip-btn').forEach(chip => {
         chip.addEventListener('click', () => {
             const flow = chip.dataset.flow;
             if (flow) {
-                // Close menu
-                isMenuOpen = false;
-                primaryNav.style.display = 'none';
-                menuToggle.classList.remove('active');
-                toggleIcon.style.transform = 'rotate(0)';
-                
-                // Add user message showing chip text
                 const text = chip.textContent.trim();
                 addMessage('user', text);
                 processCommand(flow);
@@ -295,8 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Intro Screen Buttons
-    document.querySelectorAll('.intro-actions .btn').forEach(btn => {
+    // --- Intro Screen CTA Buttons ---
+    document.querySelectorAll('.intro-buttons .btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const action = btn.dataset.action;
             if (action) {
@@ -306,57 +290,59 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Modal Logic ---
+    // --- Global Event Delegation for Bot Options ---
+    if (chatMessages) {
+        chatMessages.addEventListener('click', (e) => {
+            const option = e.target.closest('.action-options li');
+            if (option) {
+                const action = option.dataset.action;
+                const link = option.dataset.link;
+
+                if (action) {
+                    e.stopPropagation();
+                    if (action === 'open_contact_form') {
+                        alert('Send an email directly to shehryarahmadkhalil055@gmail.com or call +92 320 9389299!');
+                        return;
+                    }
+                    const text = option.textContent.trim();
+                    addMessage('user', text);
+                    processCommand(action);
+                } else if (link) {
+                    e.stopPropagation();
+                    window.open(link, '_blank');
+                }
+            }
+        });
+    }
+
+    // --- Modal Handler ---
     function openModal(src, type) {
+        if (!modal) return;
         modal.style.display = 'flex';
         if (type === 'image') {
             modalImg.style.display = 'block';
             modalIframe.style.display = 'none';
             modalImg.src = src;
-        } else if (type === 'video') {
-            modalImg.style.display = 'none';
-            modalIframe.style.display = 'block';
-            modalIframe.src = src;
         }
     }
 
     window.openModal = openModal;
 
-    modalClose.addEventListener('click', () => {
-        modal.style.display = 'none';
-        modalIframe.src = '';
-        modalImg.src = '';
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
+    if (modalClose) {
+        modalClose.addEventListener('click', () => {
             modal.style.display = 'none';
-            modalIframe.src = '';
             modalImg.src = '';
-        }
-    });
+        });
+    }
 
-    // --- Theme Switcher ---
-    const originalProcess = processCommand;
-    processCommand = function(input) {
-        const lower = input.toLowerCase().trim();
-        if (lower.startsWith('theme ')) {
-            const color = lower.split(' ')[1];
-            const themeLink = document.getElementById('theme-style');
-            if (themeLink && ['purple','blue','green','pink'].includes(color)) {
-                themeLink.href = `css/skins/${color}.css`;
-                addMessage('user', input);
-                addMessage('bot', `✅ Theme switched to <strong>${color}</strong>!`, true);
-                return;
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                modalImg.src = '';
             }
-        }
-        originalProcess(input);
-    };
-    window.processCommand = processCommand;
+        });
+    }
 
-    // Initial state: Intro visible, Chat hidden.
-    chatWindow.style.display = 'none';
-    chatFooter.style.display = 'none';
-
-    console.log('Chatfolio UI Loaded for Shehryar Ahmad Khalil! Try typing "about", "experience", "skills", "projects", or "theme blue".');
+    console.log('Chatfolio Exact Replica initialized!');
 });
