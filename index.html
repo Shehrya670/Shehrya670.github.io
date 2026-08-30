@@ -2062,27 +2062,24 @@
       }));
     }
 
-    // GSAP SCROLL ANIMATIONS
-    gsap.utils.toArray('section').forEach(sec => {
-      const els = sec.querySelectorAll('.section-header, .about-grid, .exp-card, .sim-card, .projects-grid, .edu-cert-grid, .lead-grid');
-      if (els.length) {
-        gsap.fromTo(els, 
-          { y: 30, opacity: 0 },
-          {
-            scrollTrigger: {
-              trigger: sec,
-              start: 'top 88%',
-              toggleActions: 'play none none none'
-            },
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            stagger: 0.15,
-            ease: 'power3.out'
-          }
-        );
-      }
-    });
+    // BULLETPROOF SCROLL REVEAL OBSERVER
+    const revealElements = document.querySelectorAll('.section-header, .about-grid, .exp-card, .sim-card, .projects-grid, .edu-cert-grid, .lead-grid');
+    revealElements.forEach(el => el.classList.add('reveal'));
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.05 });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Fallback guarantee: ensure all elements become visible
+    setTimeout(() => {
+      revealElements.forEach(el => el.classList.add('visible'));
+    }, 800);
 
     // SKILL BAR ANIMATIONS ON SCROLL
     ScrollTrigger.create({
