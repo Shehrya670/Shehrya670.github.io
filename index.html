@@ -516,6 +516,115 @@
       text-decoration: none;
     }
 
+    /* EXPERIENCE */
+    #experience {
+      background: var(--bg);
+    }
+
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .exp-card {
+      background: var(--surface);
+      padding: 36px 40px;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 2px;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .exp-card:hover {
+      border-color: rgba(110, 244, 200, 0.3);
+      border-left-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .exp-header-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .exp-role {
+      font-family: 'Poppins', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .exp-company {
+      font-size: 13px;
+      color: var(--accent);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .exp-period {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      background: var(--surface2);
+      padding: 6px 14px;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+    }
+
+    .exp-bullets {
+      list-style: none;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .exp-bullets li {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .exp-bullets li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .exp-bullets li strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .exp-tag {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 12px;
+      border-radius: 2px;
+      background: var(--surface2);
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+
     /* SKILLS */
     #skills {}
 
@@ -1164,6 +1273,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#education">Education</a></li>
@@ -1306,10 +1416,44 @@
     </div>
   </section>
 
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-header reveal">
+      <div class="section-num">02</div>
+      <h2 class="section-title">Work <em>Experience</em></h2>
+    </div>
+    <div class="exp-list">
+      <div class="exp-card reveal">
+        <div class="exp-header-wrap">
+          <div>
+            <div class="exp-role">Data Science Intern</div>
+            <div class="exp-company">
+              <i data-lucide="building-2" style="width:14px; height:14px;"></i>
+              Qaswa Industries Pvt Ltd
+            </div>
+          </div>
+          <div class="exp-period">JULY 1 – AUGUST 28 · 2 MONTHS</div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Engineered custom <strong>Python</strong> data processing workflows and automated scripts for dataset manipulation and analytical reporting.</li>
+          <li>Designed, queried, and maintained relational database systems using <strong>PostgreSQL</strong>, optimizing SQL queries to ensure high data availability and performance.</li>
+          <li>Integrated and synchronized enterprise data solutions within <strong>Odoo ERP</strong>, facilitating streamlined reporting, data accuracy, and operational insights.</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Python</span>
+          <span class="exp-tag">PostgreSQL</span>
+          <span class="exp-tag">Odoo ERP</span>
+          <span class="exp-tag">SQL & Query Optimization</span>
+          <span class="exp-tag">Data Pipelines & Analytics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SKILLS -->
   <section id="skills">
     <div class="section-header reveal">
-      <div class="section-num">02</div>
+      <div class="section-num">03</div>
       <h2 class="section-title">Technical <em>Skills</em></h2>
     </div>
     <div class="skills-grid">
@@ -1406,7 +1550,7 @@
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-header reveal">
-      <div class="section-num">03</div>
+      <div class="section-num">04</div>
       <h2 class="section-title">Selected <em>Projects</em></h2>
     </div>
     <div class="projects-list">
@@ -1531,7 +1675,7 @@
   <!-- EDUCATION & CERTS -->
   <section id="education">
     <div class="section-header reveal">
-      <div class="section-num">04</div>
+      <div class="section-num">05</div>
       <h2 class="section-title">Education & <em>Certifications</em></h2>
     </div>
     <div class="edu-cert-grid">
@@ -1624,7 +1768,7 @@
   <!-- LEADERSHIP -->
   <section id="leadership">
     <div class="section-header reveal">
-      <div class="section-num">05</div>
+      <div class="section-num">06</div>
       <h2 class="section-title">Leadership & <em>Community</em></h2>
     </div>
     <div class="leadership-grid">
@@ -1684,7 +1828,7 @@
     document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
     function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
     animRing();
-    document.querySelectorAll('a, button, .project-item, .skill-card, .cert-item, .lead-card').forEach(el => {
+    document.querySelectorAll('a, button, .project-item, .skill-card, .cert-item, .lead-card, .exp-card').forEach(el => {
       el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
       el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
     });
