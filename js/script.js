@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function addMessage(type, content, isHTML = false) {
         const div = document.createElement('div');
         div.className = `message ${type}`;
-        if (isHTML) {
+        if (content instanceof HTMLElement) {
+            div.appendChild(content);
+        } else if (isHTML) {
             div.innerHTML = content;
         } else {
             div.textContent = content;
@@ -56,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Clone the content deeply
         const clone = template.cloneNode(true);
+        clone.style.display = 'block';
         
         // Process Star Ratings in the clone
         clone.querySelectorAll('.stars').forEach(el => {
@@ -106,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         alert('Send an email directly to shehryarahmadkhalil055@gmail.com or call +92 320 9389299!');
                         return;
                     }
-                    // Trigger the command again
+                    const text = item.textContent.trim();
+                    addMessage('user', text);
                     processCommand(action);
                 } else if (link) {
                     window.open(link, '_blank');
@@ -114,10 +118,31 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Get the inner HTML of the clone and wrap it nicely
-        const html = clone.innerHTML;
-        addMessage('bot', html, true);
+        addMessage('bot', clone, true);
     }
+
+    // Global Event Delegation fallback for chat options & gallery images
+    chatMessages.addEventListener('click', (e) => {
+        const option = e.target.closest('.action-options li');
+        if (option) {
+            const action = option.dataset.action;
+            const link = option.dataset.link;
+
+            if (action) {
+                e.stopPropagation();
+                if (action === 'open_contact_form') {
+                    alert('Send an email directly to shehryarahmadkhalil055@gmail.com or call +92 320 9389299!');
+                    return;
+                }
+                const text = option.textContent.trim();
+                addMessage('user', text);
+                processCommand(action);
+            } else if (link) {
+                e.stopPropagation();
+                window.open(link, '_blank');
+            }
+        }
+    });
 
     // --- Core Processor ---
     function processCommand(input) {
