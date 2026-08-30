@@ -62,9 +62,10 @@ body {
 
 /* ===== MAIN CHAT WRAPPER ===== */
 .chat-wrapper {
-    width: 100%;
-    max-width: 880px;
-    height: 740px;
+    width: 95vw;
+    max-width: 1400px;
+    height: 85vh;
+    min-height: 700px;
     background: var(--bg-container);
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-main);
@@ -245,10 +246,14 @@ body {
 /* THREE-COLUMN MID GRID */
 .intro-mid-grid {
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr;
+    grid-template-columns: 1fr 1.3fr 1fr;
     align-items: center;
-    gap: 20px;
-    margin-bottom: 24px;
+    gap: 32px;
+    margin-bottom: 28px;
+    max-width: 1050px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
 /* LEFT: QUOTE CARD */
